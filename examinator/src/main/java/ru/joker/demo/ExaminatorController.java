@@ -1,6 +1,6 @@
 package ru.joker.demo;
 
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,31 +18,13 @@ import java.util.stream.Collectors;
 
 @RestController
 public class ExaminatorController {
-    private final ExaminatorProperties   examinatorProperties;
-    private final Map<String, WebClient> webClientMap;
-    private final DiscoveryClient discoveryClient;
+    private final ExaminatorProperties examinatorProperties;
+    private final WebClient.Builder    webClientMap;
 
     public ExaminatorController(ExaminatorProperties examinatorProperties,
-                                WebClient.Builder webClientBuilder,
-                                DiscoveryClient discoveryClient) {
+                                @LoadBalanced WebClient.Builder builder) {
         this.examinatorProperties = examinatorProperties;
-        this.discoveryClient = discoveryClient;
-
-        webClientMap = examinatorProperties
-                .getUrls()
-                .entrySet()
-                .stream()
-                .map(stringStringEntry ->
-                        Map.entry(stringStringEntry.getKey(),
-                                webClientBuilder
-                                        .baseUrl(stringStringEntry.getValue())
-                                        .build()
-                        )
-                )
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue
-                ));
+        this.webClientMap = builder;
     }
 
     @PostMapping("/exam")
@@ -50,9 +32,10 @@ public class ExaminatorController {
 
         List<Mono<Section>> collect = examSpec.entrySet()
                 .stream()
-                .map(entry -> webClientMap.get(entry.getKey())
+                .map(entry -> webClientMap
+                        .build()
                         .get()
-                        .uri("/random?limit=" + entry.getValue())
+                        .uri("http://" + entry.getKey() + "/random?limit=" + entry.getValue())
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<Exercise>>() {
                         })
