@@ -1,5 +1,6 @@
 package ru.joker.demo;
 
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +11,6 @@ import reactor.core.publisher.Mono;
 import ru.sprincloud.common.Exercise;
 import ru.sprincloud.common.Section;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +20,13 @@ import java.util.stream.Collectors;
 public class ExaminatorController {
     private final ExaminatorProperties   examinatorProperties;
     private final Map<String, WebClient> webClientMap;
+    private final DiscoveryClient discoveryClient;
 
     public ExaminatorController(ExaminatorProperties examinatorProperties,
-                                WebClient.Builder webClientBuilder) {
+                                WebClient.Builder webClientBuilder,
+                                DiscoveryClient discoveryClient) {
         this.examinatorProperties = examinatorProperties;
+        this.discoveryClient = discoveryClient;
 
         webClientMap = examinatorProperties
                 .getUrls()

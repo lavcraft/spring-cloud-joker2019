@@ -3,3 +3,6 @@ examinator:
   urls:
     java: http://localhost:8081
     theology: http://localhost:8082
+
+eureka.client.service-url.defaultZone: http://127.0.0.1:9999/eureka/
+spring.application.name: EXAMINATOR
