@@ -1,0 +1,9 @@
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = '8'
+targetCompatibility = '8'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux',
+            'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+}
