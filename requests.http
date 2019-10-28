@@ -1,0 +1,75 @@
+POST http://localhost:53064/actuator/bus-refresh
+
+###
+
+POST http://localhost:8080/actuator/refresh
+
+###
+
+GET http://localhost:8080/a
+
+###
+
+POST http://localhost:8080/exam
+Content-Type: application/json
+
+{
+  "math": 5,
+  "java": 2
+}
+
+###
+
+GET http://localhost:8081/random?amount=32
+Content-Type: application/json
+
+{}
+
+###
+
+GET http://localhost:8082/random?amount=2
+Content-Type: application/json
+
+{}
+
+###
+
+
+GET http://localhost:8082
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://localhost:8082/exerciseDToes
+Content-Type: application/json
+
+{
+  "question": "Какая последняя джава",
+  "answer": "12"
+}
+
+###
+
+
+
+GET http://localhost:8082/one
+HOST: yyaya.ru
+X-Forwarded-Path: /two/one
+
+
+###
+
+GET http://localhost:7777/EXAMINATOR/a
+
+###
+
+
+GET http://localhost:7777/JAVA/random?amount=1
+
+###
+
+GET http://localhost:7777/MATH/random?amount=5
+
+###

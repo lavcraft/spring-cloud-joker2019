@@ -1,0 +1,5 @@
+server.port: 8080
+examinator:
+  urls:
+    java: http://localhost:8081
+    theology: http://localhost:8082

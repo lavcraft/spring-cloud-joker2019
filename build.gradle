@@ -1,0 +1,64 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.9.RELEASE' apply false
+}
+
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'java'
+
+allprojects {
+
+    repositories {
+        jcenter()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+
+    dependencies {
+        //dependency management
+        [
+                enforcedPlatform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES),
+                platform('org.springframework.cloud:spring-cloud-dependencies:Greenwich.RELEASE'),
+//          platform('org.springframework.cloud:spring-cloud-bus:2.1.1.RELEASE'),
+                platform('org.junit:junit-bom:5.4.1'),
+        ].each {
+            implementation it
+            annotationProcessor it
+            testAnnotationProcessor it
+        }
+
+        //declare dependencies
+        ['org.projectlombok:lombok',
+         'org.springframework.boot:spring-boot-configuration-processor'
+        ].each {
+            compileOnly it
+            testCompileOnly it
+            annotationProcessor it
+            testAnnotationProcessor it
+        }
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test',
+                'org.mockito:mockito-junit-jupiter',
+                'org.junit.jupiter:junit-jupiter-engine'
+    }
+}
+
+configure([
+        project(':examinator'),
+        project(':java'),
+        project(':theology'),
+]) {
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        implementation project(':common')
+        implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    }
+}
