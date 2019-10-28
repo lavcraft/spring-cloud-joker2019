@@ -6,3 +6,6 @@ spring:
       server:
         git:
           uri: https://github.com/lavcraft/configproperties.git
+
+eureka.client.service-url.defaultZone: http://127.0.0.1:9999/eureka/
+spring.application.name: CONFIGSERVER
