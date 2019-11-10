@@ -1,5 +1,4 @@
 server.port: 8889
-
 spring:
   cloud:
     config:
@@ -7,5 +6,11 @@ spring:
         git:
           uri: https://github.com/lavcraft/configproperties.git
 
-eureka.client.service-url.defaultZone: http://127.0.0.1:9999/eureka/
+
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+  client:
+    service-url.defaultZone: http://127.0.0.1:9999/eureka/
+
 spring.application.name: CONFIGSERVER
